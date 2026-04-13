@@ -409,6 +409,7 @@ export default function App() {
                 <Mail className="w-6 h-6" />
                 <span className="text-xs uppercase tracking-widest font-bold">Email</span>
               </a>
+              <p><a href="tel:+918309489027">+91 8309489027</a></p>
             </div>
           </div>
         </section>
