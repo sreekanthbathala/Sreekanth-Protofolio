@@ -418,10 +418,6 @@ export default function App() {
         <p className="text-[10px] uppercase tracking-widest text-brand-muted">
           © 2024 Sreekanth Bathala. All Rights Reserved.
         </p>
-        <div className="flex items-center gap-6">
-          <span className="text-[10px] uppercase tracking-widest text-brand-muted">Built with React & Tailwind</span>
-          <div className="w-2 h-2 bg-brand-accent rounded-full animate-pulse" />
-        </div>
       </footer>
     </div>
   );
