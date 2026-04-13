@@ -81,121 +81,7 @@ const EDUCATION = [
   }
 ];
 
-function ContactForm() {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [status, setStatus] = useState('idle'); // idle, sending, success, error
-  const [errorMessage, setErrorMessage] = useState('');
 
-  const validateEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!formData.name || !formData.email || !formData.message) {
-      setErrorMessage('Please fill in all fields.');
-      setStatus('error');
-      return;
-    }
-
-    if (!validateEmail(formData.email)) {
-      setErrorMessage('Please enter a valid email address.');
-      setStatus('error');
-      return;
-    }
-
-    setStatus('sending');
-    setErrorMessage('');
-
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setStatus('success');
-        setFormData({ name: '', email: '', message: '' });
-      } else {
-        const data = await response.json();
-        setErrorMessage(data.error || 'Something went wrong. Please try again.');
-        setStatus('error');
-      }
-    } catch (error) {
-      setErrorMessage('Failed to connect to the server.');
-      setStatus('error');
-    }
-  };
-
-  return (
-    <div className="p-8 md:p-12 border border-brand-border bg-brand-accent/5 rounded-2xl text-left">
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest font-bold text-brand-muted">Name</label>
-            <input 
-              type="text"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="Your Name"
-              className="w-full bg-brand-bg border border-brand-border px-4 py-3 text-sm focus:border-brand-accent outline-none transition-colors"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest font-bold text-brand-muted">Email</label>
-            <input 
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              placeholder="your@email.com"
-              className="w-full bg-brand-bg border border-brand-border px-4 py-3 text-sm focus:border-brand-accent outline-none transition-colors"
-            />
-          </div>
-        </div>
-        <div className="space-y-2">
-          <label className="text-[10px] uppercase tracking-widest font-bold text-brand-muted">Message</label>
-          <textarea 
-            rows={5}
-            value={formData.message}
-            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-            placeholder="How can I help you?"
-            className="w-full bg-brand-bg border border-brand-border px-4 py-3 text-sm focus:border-brand-accent outline-none transition-colors resize-none"
-          />
-        </div>
-
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <button 
-            type="submit"
-            disabled={status === 'sending'}
-            className={cn(
-              "w-full md:w-auto px-12 py-4 font-bold uppercase text-xs tracking-[0.2em] transition-all",
-              status === 'sending' 
-                ? "bg-brand-muted text-brand-bg cursor-not-allowed" 
-                : "bg-brand-accent text-brand-bg hover:bg-white"
-            )}
-          >
-            {status === 'sending' ? 'Sending...' : 'Send Message'}
-          </button>
-
-          {status === 'success' && (
-            <p className="text-brand-accent text-xs font-bold uppercase tracking-widest">Message sent successfully!</p>
-          )}
-          {status === 'error' && (
-            <p className="text-red-500 text-xs font-bold uppercase tracking-widest">{errorMessage}</p>
-          )}
-        </div>
-      </form>
-    </div>
-  );
-}
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('All');
@@ -524,8 +410,6 @@ export default function App() {
                 <span className="text-xs uppercase tracking-widest font-bold">Email</span>
               </a>
             </div>
-
-            <ContactForm />
           </div>
         </section>
       </main>
